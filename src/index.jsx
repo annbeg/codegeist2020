@@ -47,8 +47,8 @@ const fetchContentForLikes = async (contentId) => {
 const fetchContentForAuthor = async (contentId) => {
   const res = await api
     .asApp()
-    // .requestConfluence(`/wiki/rest/api/content/${contentId}?expand=metadata.likes`);
     .requestConfluence(`/wiki/rest/api/content/${contentId}/history?expand=contributors.publishers`);
+    // .requestConfluence(`/wiki/rest/api/content/${contentId}?expand=metadata.likes`);
     // .requestConfluence(`/wiki/rest/api/space/${contentId}/history?expand=contributors.publishers`);
 
   const data = await res.json();
