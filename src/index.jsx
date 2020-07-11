@@ -87,14 +87,8 @@ const getTopLiked = async (spaceKey) => {
       } else {
         statDict[l] = await fetchContentForLikes(listOfPages[index].id);
       }
-<<<<<<< HEAD
 
-
-    } else{
-=======
     } else {
-      // console.log(index);
->>>>>>> 1b69ebaf7b249c9eb764fad4c4fa4558becbf918
       continue;
     }
   }
