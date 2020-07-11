@@ -8,22 +8,31 @@ import api from '@forge/api';
 
 const App = () => {
   const context = useProductContext();
-
   const [stats, setComments] = useState(async () => await getTopLiked(context.spaceKey));
 
-  const avatarUser = (<Avatar accountId= {stats[0][0].split(',')[2]} />);
   return (
     <Fragment>
-      <Text>Cтатистика</Text>
-      <Fragment>
-        {avatarUser}
-        <Text children={avatarUser}>
-          {`${stats[0][0].split(',')[1]}: ${stats[0][1]}`}
-        </Text>
-      </Fragment>
-      <Text>
-        {`${stats[1][0].split(',')[1]}: ${stats[1][1]}`}
-      </Text>
+      <Text>Workspace statistic</Text>
+	  <Table>
+	    <Head>
+	      <Cell>
+	        <Text content="Points" />
+	      </Cell>
+	      <Cell>
+	        <Text content="Teammate" />
+	      </Cell>
+	    </Head>
+	    {stats !== null && stats.length !== 0 && stats.map((item) => (
+	      <Row>
+	        <Cell>
+	          <Text>{item[1]}</Text>
+	        </Cell>
+	        <Cell>
+	          <Avatar accountId={item[0].split(',')[0]} />
+	        </Cell>
+	      </Row>
+	    ))}
+	  </Table>
     </Fragment>
   );
 };
