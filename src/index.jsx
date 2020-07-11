@@ -1,5 +1,6 @@
 import ForgeUI, {
-	Avatar, render, Fragment, Macro, Text, useProductContext, useState,
+	render, useProductContext, useState,
+	Avatar, Fragment, Macro, Text, Table, Head, Cell, Row,
 } from '@forge/ui';
 import api from '@forge/api';
 // import { fetch } from '@forge/api';
