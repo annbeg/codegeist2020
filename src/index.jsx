@@ -1,6 +1,6 @@
 import ForgeUI, {
 	render, useProductContext, useState,
-	Avatar, Fragment, Macro, Text, Table, Head, Cell, Row,
+	Avatar, Fragment, Macro, Text, Table, Head, Cell, Row, ButtonSet, Button, StatusLozenge,
 } from '@forge/ui';
 import api from '@forge/api';
 // import { fetch } from '@forge/api';
@@ -8,31 +8,103 @@ import api from '@forge/api';
 
 const App = () => {
   const context = useProductContext();
-  const [stats, setComments] = useState(async () => await getTopCommentators(context.spaceKey));
+  const [activePanel, setActivePanel] = useState('liked');
+
+  const [topLiked, setTopLiked] = useState(async () => await getTopLiked(context.spaceKey));
+  const [topContributors, setTopContributors] = useState(async () => await getTopContributors(context.spaceKey));
+  const [topCommentators, setTopCommentators] = useState(async () => await getTopCommentators(context.spaceKey));
 
   return (
     <Fragment>
-      <Text>Workspace statistic</Text>
-	  <Table>
-	    <Head>
-	      <Cell>
-	        <Text content="Points" />
-	      </Cell>
-	      <Cell>
-	        <Text content="Teammate" />
-	      </Cell>
-	    </Head>
-	    {stats !== null && stats.length !== 0 && stats.map((item) => (
-	      <Row>
-	        <Cell>
-	          <Text>{item[1]}</Text>
-	        </Cell>
-	        <Cell>
-	          <Avatar accountId={item[0]} />
-	        </Cell>
-	      </Row>
-	    ))}
-	  </Table>
+      <Text>
+	  	**Workspace statistic**
+	  </Text>
+	  <ButtonSet>
+		<Button text="Top liked" onClick={() => { setActivePanel('liked'); }} />
+		<Button text="Top contributors" onClick={() => { setActivePanel('contributors'); }} />
+		<Button text="Top commentators" onClick={() => { setActivePanel('commentators'); }} />
+	  </ButtonSet>
+	  {activePanel === 'liked' && (
+		<Fragment>
+		  <Text>
+		  	Top liked
+		  </Text>
+		  <Table>
+		    <Head>
+			  <Cell>
+			    <Text content="Likes" />
+			  </Cell>
+			  <Cell>
+			    <Text content="Teammate" />
+			  </Cell>
+		    </Head>
+		    {topLiked !== null && topLiked.length !== 0 && topLiked.map((item) => (
+			  <Row key={item[1]}>
+			    <Cell>
+			      <Text>{item[1]}</Text>
+			    </Cell>
+			    <Cell>
+				  <Avatar accountId={item[0]} />
+			    </Cell>
+			  </Row>
+		    ))}
+		  </Table>
+		</Fragment>
+	  )}
+	  {activePanel === 'contributors' && (
+		<Fragment>
+  		  <Text>
+  		  	Top contributors
+  		  </Text>
+		  <Table>
+		    <Head>
+			  <Cell>
+			    <Text content="Likes" />
+			  </Cell>
+			  <Cell>
+			    <Text content="Teammate" />
+			  </Cell>
+		    </Head>
+		    {topContributors !== null && topContributors.length !== 0 && topContributors.map((item) => (
+			  <Row key={item[1]}>
+			    <Cell>
+			      <Text>{item[1]}</Text>
+			    </Cell>
+			    <Cell>
+				  <Avatar accountId={item[0]} />
+			    </Cell>
+			  </Row>
+		    ))}
+		  </Table>
+		</Fragment>
+	  )}
+	  {activePanel === 'commentators' && (
+		<Fragment>
+		  <Text>
+		  	Top commentators
+		  </Text>
+		  <Table>
+		    <Head>
+			  <Cell>
+			    <Text content="Likes" />
+			  </Cell>
+			  <Cell>
+			    <Text content="Teammate" />
+			  </Cell>
+		    </Head>
+		    {topCommentators !== null && topCommentators.length !== 0 && topCommentators.map((item) => (
+			  <Row key={item[1]}>
+			    <Cell>
+			      <Text>{item[1]}</Text>
+			    </Cell>
+			    <Cell>
+				  <Avatar accountId={item[0]} />
+			    </Cell>
+			  </Row>
+		    ))}
+		  </Table>
+		</Fragment>
+	  )}
     </Fragment>
   );
 };
@@ -173,7 +245,7 @@ const fetchContentForCommentsAuthors = async (contentId) => {
 
   // console.log(data.contributors.publishers.users);
   const resultData = [];
-  
+
   for (var i=0;i<data.results.length;i++){
     resultData.push(data.results[i].history.createdBy.accountId)
   }
@@ -197,10 +269,10 @@ const getTopCommentators = async (spaceKey) => {
         statDict[commentators[i]] += 1
       }else{
         statDict[commentators[i]] = 1
-      }      
+      }
     }
   }
-  
+
 
 
   const statArray = Object.keys(statDict).map((key) => [key, statDict[key]]);
