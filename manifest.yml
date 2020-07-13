@@ -2,8 +2,8 @@ modules:
   macro:
     - key: codegeist-hello-world
       function: main
-      title: codegeist-app
-      description: Inserts Hello world!
+      title: Motivapp
+      description: Increase team productivity!
   function:
     - key: main
       handler: index.run
